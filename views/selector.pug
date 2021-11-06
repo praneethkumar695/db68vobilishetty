@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  - let images = ['PorscheLogo.jpg','Porsche.jpg','Mileage.jpg','Money.jpeg','Yellow.jpg']
+  - for(let i=0;i<3;i++){
+      - let randomNumber = Math.floor(Math.random()*5)
+      - let image = images[randomNumber]
+      img(src=`images/${image}` alt="car" style='width:300px; height:300px;')
+  - }
