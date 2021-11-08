@@ -2,16 +2,16 @@ extends layout
 
 block content
   h1= title
-  - const cat=['carName', 'carType','carCost','carMileage','carColour']
-  - let results;
+  - let items = results;
+  - let output;
   script.
     function buy(x){
-      alert('You purchased item ' + x)
+      alert('purchased item ' + x)
    } 
   div(class='container-fluid')
     div(class='row')
-      each results, index in cat
-        div(class='col-sm-2' onclick='buy('+index+')') #{results} 
+      each output, index in items
+        div(class='col-sm-3' onclick='buy('+index+')') #{output} 
         
 
   

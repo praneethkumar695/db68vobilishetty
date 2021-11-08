@@ -8,5 +8,3 @@ Class car
 carName(string)
 carType(string)
 carCost(number)
-carMileage(number)
-carColour(string)
