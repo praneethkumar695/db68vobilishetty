@@ -6,15 +6,15 @@ var car_controller = require('../controllers/car');
 /// API ROUTE ///
 // GET resources base.
 router.get('/resource', api_controller.api);
-/// gas ROUTES ///
-// POST request for creating a gas.
+/// car ROUTES ///
+// POST request for creating a car.
 router.post('/resource/car', car_controller.car_create_post);
-// DELETE request to delete gas.
+// DELETE request to delete car.
 router.delete('/resource/car/:id', car_controller.car_delete);
-// PUT request to update gas.
+// PUT request to update car.
 router.put('/resource/car/:id', car_controller.car_update_put);
-// GET request for one gas.
+// GET request for one car.
 router.get('/resource/car/:id', car_controller.car_detail);
-// GET request for list of all gas items.
+// GET request for list of all car items.
 router.get('/resource/car', car_controller.car_list);
 module.exports = router;
