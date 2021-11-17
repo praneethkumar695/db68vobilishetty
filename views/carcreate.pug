@@ -1,0 +1,41 @@
+extends layout
+
+block content
+ h1= title
+ form(id='CarForm', action="/resource/car", method="POST")
+    div.form-group
+    div(class="row g-3 align-items-center")
+      div(class="col-1")
+         label.carAttr(for='carName',class="col-form-label") Car Name
+      div(class="col-auto")
+         input#carName(type='text', name='carName',class="form-control")
+    div.form-group
+    div(class="row g-3 align-items-center")
+      div(class="col-1")
+         label.carAttr(for='carType', class="col-form-label") Car Type
+      div(class="col-auto")
+         input#carType(type='text', name='carType',class="form-control")
+    div.form-group
+    div(class="row g-3 align-items-center")
+      div(class="col-1")
+         label.carAttr(for='carCost',class="col-form-label") Car cost
+      div(class="col-auto")
+         input#carCost(type='number', name='carCost',class="form-control")
+    input(type="submit",class="btn btn-primary")
+ script.
+    document.forms['CarForm'].addEventListener('submit', (event) => {
+    event.preventDefault();
+    // TODO do something here to show user that form is being submitted
+    fetch(event.target.action, {
+    method: 'POST',
+    body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+    }).then((resp) => {
+    return resp.json(); // or resp.text() or whatever the server sends
+    }).then((body) => {
+    alert("Save succeded")
+    // TODO handle body
+    }).catch((error) => {
+    // TODO handle error
+    alert("Save failed " + error )
+    });
+    });

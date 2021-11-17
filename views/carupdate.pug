@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  h1= title
+
+  if(toShow == null)
+    h2 No instance to update
+  else
+    - let carid = toShow._id
+    - let carName = toShow.carName
+    - let carType = toShow.carType
+    - let carCost = toShow.carCost
+    - let actionid = "/resource/car/" + carid
+    script let actionid = "#{actionid}"
+    div.row(class='mb-2')
+    div.mr-1 ID is 
+      span(style="color:red")  #{carid}
+    form(id='CarForm', action= actionid, method="PUT")
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.carAttr(for='carName',class="col-form-label") Car Name
+        div(class="col-auto")
+          input#carName(type='text', name='carName',class="form-control", value=carName)
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.carAttr(for='carType',class="col-form-label") Car Type 
+        div(class="col-auto")
+          input#carType(type='text', name='carType',class="form-control", value=carType)
+      div.form-group
+      div(class="row g-3 align-items-center")
+        div(class="col-1")
+          label.carAttr(for='carCost',class="col-form-label") Car cost
+        div(class="col-auto")
+          input#carCost(type='number', name='carCost',class="form-control", value=carCost)
+      input(class="btn btn-danger m-2" type="submit")
+        //- button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+      button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+        
+  script.
+    document.forms['CarForm'].addEventListener('submit', (event) => {
+    event.preventDefault();
+    // TODO do something here to show user that form is being submitted
+    fetch(event.target.action, {
+    method: 'PUT',
+    body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+    }).then((resp) => {
+    return resp.json(); // or resp.text() or whatever the server sends
+    }).then((body) => {
+    alert("Save succeded")
+    // TODO handle body
+    }).catch((error) => {
+    // TODO handle error
+    alert("Save failed " + error )
+    });
+    });
