@@ -3,6 +3,27 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var mongoose = require('mongoose');
+var Car = require("./models/car");
+
+passport.use(new LocalStrategy(function(username, password, done) {
+  Account.findOne({ username: username }, function (err, user) {
+    if (err) { 
+      return done(err); 
+    }
+    if (!user) {
+      return done(null, false, { 
+        message: 'Incorrect username.' 
+      });
+    }
+    if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+    }
+    return done(null, user);
+  });
+}));
 var mongoose = require('mongoose');
 var Car = require("./models/car");
 
@@ -21,19 +42,19 @@ async function recreateDB() {
   Car({
     carName: "Audi",
     carType: "sports car",
-    carCost: 40.24
+    carCost: 660.24
   });
   let instance2 = new
   Car({
     carName: "BMW",
     carType: "SUV",
-    carCost: 150.80
+    carCost: 950.80
   });
   let instance3 = new
   Car({
     carName: "Benz",
     carType: "Sedan",
-    carCost: 450.67
+    carCost: 1950.67
   });  
   instance1.save(function (err, doc) {
     if (err) return console.error(err);
@@ -76,6 +97,29 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+ }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/car', carRouter);
+app.use('/addmods', addmodsRouter);
+app.use('/selector', selectorRouter);
+app.use('/', resourceRouter);
+
+// passport config
+// Use the existing connection
+// The Account model
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

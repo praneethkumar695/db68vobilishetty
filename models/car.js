@@ -1,8 +1,8 @@
 const mongoose = require("mongoose")
 const carSchema = mongoose.Schema({
-    carName: String,
+    carName: {type:String, length:7},
     carType: String,
-    carCost: Number
+    carCost: {type:Number,min:500,max:3000}
 })
 module.exports = mongoose.model("Car",
     carSchema)
